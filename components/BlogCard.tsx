@@ -18,7 +18,6 @@ function formatDate(dateString: string): string {
 export default function BlogCard({ post }: BlogCardProps) {
   const featuredImage = post.metadata?.featured_image
   const excerpt = post.metadata?.excerpt || ''
-  // Changed: use publish_date to match CMS field name
   const publishDate = post.metadata?.publish_date || post.created_at || ''
   const category = post.metadata?.category
 
@@ -46,7 +45,6 @@ export default function BlogCard({ post }: BlogCardProps) {
 
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
-        {/* Changed: added category badge */}
         <div className="flex items-center gap-3 mb-2">
           {category && (
             <span className="text-xs font-semibold uppercase tracking-wider text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full">

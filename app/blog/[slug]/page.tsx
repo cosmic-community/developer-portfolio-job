@@ -102,7 +102,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const featuredImage = post.metadata?.featured_image
   const content = post.metadata?.content || ''
-  // Changed: use publish_date to match CMS field name
   const publishDate = post.metadata?.publish_date || post.created_at || ''
   const author = post.metadata?.author
   const category = post.metadata?.category
@@ -138,7 +137,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             Back to Blog
           </Link>
 
-          {/* Changed: added category badge */}
+          {/* Category badge */}
           {category && (
             <span className="inline-block text-xs font-semibold uppercase tracking-wider text-brand-300 bg-white/10 px-3 py-1 rounded-full mb-4">
               {category.metadata?.name || category.title}
@@ -161,7 +160,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </p>
           )}
 
-          {/* Changed: added author info */}
+          {/* Author info */}
           {author && (
             <div className="flex items-center gap-3 mt-6">
               {author.metadata?.avatar?.imgix_url && (

@@ -90,7 +90,7 @@ export interface Category {
   }
 }
 
-// Blog Post types - Changed: use publish_date to match CMS field key, added author and category
+// Blog Post types
 export interface BlogPost {
   id: string
   title: string
@@ -100,8 +100,8 @@ export interface BlogPost {
     excerpt: string
     content: string
     featured_image?: CosmicFile
-    publish_date: string // Changed: was published_date, now matches CMS field key
-    author?: Author // Changed: added author relationship
-    category?: Category // Changed: added category relationship
+    publish_date: string
+    author?: Author
+    category?: Category
   }
 }
