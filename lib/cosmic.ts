@@ -90,7 +90,7 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   }
 }
 
-// Fetch all blog posts (sorted by published_date descending)
+// Fetch all blog posts (sorted by publish_date descending)
 export async function getBlogPosts(): Promise<BlogPost[]> {
   try {
     const response = await cosmic.objects
@@ -99,9 +99,10 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
       .depth(1)
 
     const posts = response.objects as BlogPost[]
+    // Changed: use publish_date to match CMS field key
     return posts.sort((a, b) => {
-      const dateA = new Date(a.metadata?.published_date || a.created_at || '').getTime()
-      const dateB = new Date(b.metadata?.published_date || b.created_at || '').getTime()
+      const dateA = new Date(a.metadata?.publish_date || a.created_at || '').getTime()
+      const dateB = new Date(b.metadata?.publish_date || b.created_at || '').getTime()
       return dateB - dateA
     })
   } catch (error: unknown) {

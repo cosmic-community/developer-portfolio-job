@@ -51,6 +51,8 @@ function formatDate(dateString: string): string {
 // Simple markdown to HTML converter for basic formatting
 function renderMarkdown(markdown: string): string {
   let html = markdown
+    // Code blocks (fenced) - must come before other replacements
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto my-6"><code class="text-sm font-mono">$2</code></pre>')
     // Headers
     .replace(/^### (.*$)/gm, '<h3 class="text-xl font-bold text-gray-900 mt-8 mb-3">$1</h3>')
     .replace(/^## (.*$)/gm, '<h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">$1</h2>')
@@ -100,7 +102,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const featuredImage = post.metadata?.featured_image
   const content = post.metadata?.content || ''
-  const publishedDate = post.metadata?.published_date || post.created_at || ''
+  // Changed: use publish_date to match CMS field name
+  const publishDate = post.metadata?.publish_date || post.created_at || ''
+  const author = post.metadata?.author
+  const category = post.metadata?.category
 
   return (
     <div className="pt-16">
@@ -133,9 +138,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             Back to Blog
           </Link>
 
-          {publishedDate && (
+          {/* Changed: added category badge */}
+          {category && (
+            <span className="inline-block text-xs font-semibold uppercase tracking-wider text-brand-300 bg-white/10 px-3 py-1 rounded-full mb-4">
+              {category.metadata?.name || category.title}
+            </span>
+          )}
+
+          {publishDate && (
             <p className="text-brand-300 text-sm font-medium mb-3">
-              {formatDate(publishedDate)}
+              {formatDate(publishDate)}
             </p>
           )}
 
@@ -147,6 +159,31 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <p className="text-lg text-gray-300 max-w-3xl mt-4">
               {post.metadata.excerpt}
             </p>
+          )}
+
+          {/* Changed: added author info */}
+          {author && (
+            <div className="flex items-center gap-3 mt-6">
+              {author.metadata?.avatar?.imgix_url && (
+                <img
+                  src={`${author.metadata.avatar.imgix_url}?w=80&h=80&fit=crop&auto=format,compress`}
+                  alt={author.metadata?.name || author.title}
+                  width={40}
+                  height={40}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              )}
+              <div>
+                <p className="text-white font-medium text-sm">
+                  {author.metadata?.name || author.title}
+                </p>
+                {author.metadata?.bio && (
+                  <p className="text-gray-400 text-xs line-clamp-1 max-w-md">
+                    {author.metadata.bio}
+                  </p>
+                )}
+              </div>
+            </div>
           )}
         </div>
       </section>

@@ -66,7 +66,31 @@ export interface WorkExperience {
   }
 }
 
-// Blog Post types
+// Author type
+export interface Author {
+  id: string
+  title: string
+  slug: string
+  metadata: {
+    name: string
+    bio?: string
+    avatar?: CosmicFile
+    website?: string
+  }
+}
+
+// Category type
+export interface Category {
+  id: string
+  title: string
+  slug: string
+  metadata: {
+    name: string
+    description?: string
+  }
+}
+
+// Blog Post types - Changed: use publish_date to match CMS field key, added author and category
 export interface BlogPost {
   id: string
   title: string
@@ -76,6 +100,8 @@ export interface BlogPost {
     excerpt: string
     content: string
     featured_image?: CosmicFile
-    published_date: string
+    publish_date: string // Changed: was published_date, now matches CMS field key
+    author?: Author // Changed: added author relationship
+    category?: Category // Changed: added category relationship
   }
 }
