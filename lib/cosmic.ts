@@ -1,5 +1,5 @@
 import { createBucketClient } from '@cosmicjs/sdk'
-import type { Skill, Project, WorkExperience } from '@/types'
+import type { Skill, Project, WorkExperience, BlogPost } from '@/types'
 
 export const cosmic = createBucketClient({
   bucketSlug: process.env.COSMIC_BUCKET_SLUG as string,
@@ -87,5 +87,47 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
       return null
     }
     throw new Error('Failed to fetch project')
+  }
+}
+
+// Fetch all blog posts (sorted by published_date descending)
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  try {
+    const response = await cosmic.objects
+      .find({ type: 'blog-posts' })
+      .props(['id', 'title', 'slug', 'metadata', 'created_at'])
+      .depth(1)
+
+    const posts = response.objects as BlogPost[]
+    return posts.sort((a, b) => {
+      const dateA = new Date(a.metadata?.published_date || a.created_at || '').getTime()
+      const dateB = new Date(b.metadata?.published_date || b.created_at || '').getTime()
+      return dateB - dateA
+    })
+  } catch (error: unknown) {
+    if (hasStatus(error) && error.status === 404) {
+      return []
+    }
+    throw new Error('Failed to fetch blog posts')
+  }
+}
+
+// Fetch a single blog post by slug
+export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  try {
+    const response = await cosmic.objects
+      .findOne({
+        type: 'blog-posts',
+        slug,
+      })
+      .props(['id', 'title', 'slug', 'metadata', 'created_at'])
+      .depth(1)
+
+    return response.object as BlogPost
+  } catch (error: unknown) {
+    if (hasStatus(error) && error.status === 404) {
+      return null
+    }
+    throw new Error('Failed to fetch blog post')
   }
 }

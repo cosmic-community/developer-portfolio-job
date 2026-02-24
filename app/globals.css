@@ -3,12 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     @apply antialiased text-gray-900 bg-white;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
 
@@ -18,10 +15,67 @@
   }
 
   .section-padding {
-    @apply py-16 sm:py-20 lg:py-24;
+    @apply py-16 sm:py-24;
   }
+}
 
-  .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-400 to-brand-600;
-  }
+/* Prose content styling for blog posts */
+.prose-content h1 {
+  @apply text-3xl font-bold text-gray-900 mt-10 mb-4;
+}
+
+.prose-content h2 {
+  @apply text-2xl font-bold text-gray-900 mt-10 mb-4;
+}
+
+.prose-content h3 {
+  @apply text-xl font-bold text-gray-900 mt-8 mb-3;
+}
+
+.prose-content p {
+  @apply text-gray-600 leading-relaxed mb-4;
+}
+
+.prose-content strong {
+  @apply text-gray-900 font-semibold;
+}
+
+.prose-content a {
+  @apply text-brand-600 hover:text-brand-700 underline;
+}
+
+.prose-content ul {
+  @apply list-disc pl-6 space-y-1 my-4;
+}
+
+.prose-content ol {
+  @apply list-decimal pl-6 space-y-1 my-4;
+}
+
+.prose-content li {
+  @apply text-gray-600;
+}
+
+.prose-content blockquote {
+  @apply border-l-4 border-brand-300 pl-4 py-1 my-4 text-gray-600 italic;
+}
+
+.prose-content code {
+  @apply px-1.5 py-0.5 bg-gray-100 text-brand-700 text-sm rounded font-mono;
+}
+
+.prose-content pre {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-6;
+}
+
+.prose-content pre code {
+  @apply bg-transparent text-gray-100 p-0 text-sm;
+}
+
+.prose-content hr {
+  @apply my-8 border-gray-200;
+}
+
+.prose-content img {
+  @apply rounded-lg my-6;
 }
